@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 // gradle 7 以上的删除了maven plugin，改为了maven-publish 可以先改为gradle 6
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 
 dependencies {
@@ -22,18 +22,46 @@ repositories {
 }
 
 
+//group 'com.pika.plugin'
+//version '1.0.2'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            //本地Maven
-            repository(url: uri('../repositories'))
-            pom.groupId = 'com.pika.plugin'
-            pom.artifactId = 'sillyboy'
-            pom.version = '1.0.2'
+
+publishing { //当前项目可以发布到本地文件夹中
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.pika.plugin'
+            artifactId 'sillyboy'
+            version '1.0.2'
+            from components.release
         }
     }
+    repositories {
+        maven {
+            url '../repositories'
+            allowInsecureProtocol = true
+//            credentials {
+//                username 'admin'
+//                password 'qwertyu123'
+            }
+            // 设置凭据等其他发布配置
+    }
 }
+
+
+
+
+
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            //本地Maven
+//            repository(url: uri('../repositories'))
+//            pom.groupId = 'com.pika.plugin'
+//            pom.artifactId = 'sillyboy'
+//            pom.version = '1.0.2'
+//        }
+//    }
+//}
 
 
 
